@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'TodoApp',
     'user',
 ]
@@ -54,8 +55,6 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'Todo.urls'
-
-
 
 
 TEMPLATES = [
@@ -95,7 +94,6 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
 ]
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -106,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS':{
-            'min_length': 8,
+            'min_length': 4,
         },
     },
     {

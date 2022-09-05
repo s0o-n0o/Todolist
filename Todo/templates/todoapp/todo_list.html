@@ -1,0 +1,13 @@
+{% extends 'todoapp/index.html' %}
+{% block title %}Todo一覧画面 {{block.super}}{% endblock%}
+{% block content %}
+    <div>
+    {% for todo in todo_list %}
+    <ul class="list-group">
+        <li class="ms-2 list-group-item"> 
+        <input class="form-check-input" type="checkbox" value={{todo.status}} id="flexCheckDefault">
+        {{todo.title}} /  期日: {{todo.deadline}} / 優先度: {{todo.priority}}</li>
+    </ul>
+    {% endfor %}
+    </div>
+{% endblock %}
