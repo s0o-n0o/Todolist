@@ -7,7 +7,6 @@
     <body>
     <nav>
         <a href="{% url 'user:index' %}">ホーム</a>
-        <a href="{% url 'admin:index' %}">管理画面</a>
     {% if user.is_authenticated %}
         <a href="{% url 'user:user_logout' %}">ログアウト</a>
     {% else %}

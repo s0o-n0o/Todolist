@@ -4,7 +4,6 @@ from django.core import validators
 from .models import Todo
 from django.contrib.admin.widgets import AdminDateWidget
 
-
 class AddForm(forms.ModelForm):
     title = forms.CharField(label='title')
     detail = forms.CharField(label='detail',widget=forms.Textarea(attrs={'rows':1,'cols':20}),required=False)

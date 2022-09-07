@@ -12,14 +12,6 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username','email','password')
 
-class ProfileForm(forms.ModelForm):
-    website = forms.URLField(label='ホームページ')
-    picture = forms.FileField(label='写真')
-
-    class Meta:
-        model = Profile
-        fields = ('website','picture')
-
 class LoginForm(forms.Form):
     username = forms.CharField(label='名前',max_length=15)
     password = forms.CharField(label='パスワード',widget=forms.PasswordInput())

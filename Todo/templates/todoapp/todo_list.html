@@ -2,6 +2,11 @@
 {% load static %}
 {% block title %}Todo一覧画面 {{block.super}}{% endblock%}
 {% block content %}
+    <header class =" p-1">
+    <div class="d-flex justify-content-left">
+        <a type="submit" class="ms-1 btn btn-primary" href="{% url 'TodoApp:add_todo' %}"> +追加</a>
+    </div>
+    </header>
     <div>
     {% for todo in todo_list %}
     <ul class="list-group">
