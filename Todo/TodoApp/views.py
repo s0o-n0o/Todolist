@@ -4,6 +4,8 @@ from django.shortcuts import render,redirect
 from .models import Todo
 from . import forms
 from django.http import HttpResponse , HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 #HTMLに表示
