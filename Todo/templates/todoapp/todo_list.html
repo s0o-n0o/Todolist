@@ -1,0 +1,23 @@
+{% extends 'todoapp/index.html' %}
+{% load static %}
+{% block title %}Todo一覧画面 {{block.super}}{% endblock%}
+{% block content %}
+    <header class =" p-1">
+    <div class="d-flex justify-content-left">
+        <a type="submit" class="ms-1 btn btn-primary" href="{% url 'TodoApp:add_todo' %}"> +追加</a>
+    </div>
+    </header>
+    <div>
+    {% for todo in todo_list %}
+    <ul class="list-group">
+        <li class="ms-2 list-group-item" > 
+        <input class="form-check-input" type="checkbox" value={{todo.status}} id="flexCheckDefault">
+        <a href=" {% url 'TodoApp:update_todo' id=todo.id %}">
+        {{todo.title}} </a>/  期日: {{todo.deadline}} / 優先度: {{todo.priority}} カテゴリー: {{todo.category}}
+        <a href="{% url 'TodoApp:delete_todo' id=todo.id %}">
+        <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
+        </li>
+    </ul>
+    {% endfor %}
+    </div>
+{% endblock %}

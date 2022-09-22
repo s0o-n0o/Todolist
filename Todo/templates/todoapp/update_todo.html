@@ -1,0 +1,30 @@
+{% extends "todoapp/index.html" %}
+{% load widget_tweaks%}
+{% block title %}Todo追加画面{{ block.super }}{% endblock %}
+
+{% block content %}
+    <form class="row g-3" method='POST'>{% csrf_token %}
+    <div class="col-md-6">
+        <label for="{{ update.title.id_for_label }}" class="form-label">title</label>
+        {{ update.title|add_class:'form-control' }}
+        <label for="{{update.detail.id_for_label}}" class="form-label" >Detail</label>
+        {{ update.detail|add_class:'form-control'}}
+    </div>
+    <div class="col-5">
+        <label for="{{update.deadline.id_for_label}}" class="form-label" >Deadline</label>
+        {{update.deadline|add_class:'form-control'}}
+    </div>
+    <div class="col-md-5">
+        <label for="{{update.priority.id_for_label}}" class="form-label">Priority</label>
+        {{update.priority}}
+        
+    </div>
+    <div class="col-md-4">
+        <label for="{{update.category.id_for_label}}" class="form-label">Category</label>
+        {{update.category}}
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">+ Update</button>
+    </div>
+    </form>
+{% endblock %}
