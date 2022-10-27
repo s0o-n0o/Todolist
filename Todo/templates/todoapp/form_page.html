@@ -3,8 +3,8 @@
 {% block title %}Todo追加画面{{ block.super }}{% endblock %}
 
 {% block content %}
-    <form class="row g-3" method='POST'>{% csrf_token %}
-    <div class="col-md-6">
+    <form class="row g-3 ms-3" method='POST'>{% csrf_token %}
+    <div class="col-md-6 ">
         <label for="{{ form.title.id_for_label }}" class="form-label">title</label>
         {{ form.title|add_class:'form-control' }}
         <label for="{{form.detail.id_for_label}}" class="form-label" >Detail</label>

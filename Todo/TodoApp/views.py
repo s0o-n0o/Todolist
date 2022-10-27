@@ -1,3 +1,4 @@
+from secrets import choice
 from turtle import update
 from unicodedata import category
 from django.shortcuts import render,redirect
@@ -11,11 +12,20 @@ from django.contrib.auth.decorators import login_required
 #HTMLに表示
 def Todo_list(request):
     todos = Todo.objects.all()
-    choices=['仕事', '習慣','用事','やりたい事']
+    # choices=Todo._meta.get_field('category').choices
+    # choice_list ={}
+    # todos_choice = []
+    # for number,category in choices:
+    #     choice_list[number]=category
+    # for i in range(len(todos)):
+    #     todos_choice.append(choice_list[int(todos[i].category)])
+    print(todos[0].get_category_display())
     return render(request,'todoapp/todo_list.html',context= {
         "todo_list":todos,
-        "choices":choices,
+        # "choices":todos_choice,
     })
+
+# Todo_list()
 
 #タスクの更新(編集)
 def update_todo(request,id):

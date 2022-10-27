@@ -12,7 +12,7 @@ class AddForm(forms.ModelForm):
         (2,'習慣'),
         (3,'用事'),
         (4,'やりたい事'),
-    ),widget=forms.SelectMultiple,required=False)
+    ),widget=forms.RadioSelect,required=False)
     deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
@@ -39,7 +39,7 @@ class UpdateForm(forms.ModelForm):
         (2,'習慣'),
         (3,'用事'),
         (4,'やりたい事'),
-    ),widget=forms.SelectMultiple,required=False)
+    ),widget=forms.RadioSelect,required=False)
     deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
