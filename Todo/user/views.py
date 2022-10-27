@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from user.forms import UserForm,ProfileForm,LoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -15,17 +16,13 @@ def index(request):
 
 def register(request):
     user_form = UserForm(request.POST or None)
-    profile_form = ProfileForm(request.POST or None, request.FILES or None)
-    if user_form.is_valid() and profile_form.is_valid():
+    if user_form.is_valid(): # validation
         user = user_form.save()
         user.set_password(user.password)
         user.save() #ユーザー保存
-        profile = profile_form.save(commit = False)
-        profile.user = user
-        profile.save()
+        return redirect('user:user_login')
     return render(request ,'user/registration.html', context={
         'user_form':user_form,
-        'profile_form':profile_form,
     })
 
 def user_login(request):
@@ -33,9 +30,9 @@ def user_login(request):
     if login_form.is_valid():
         username = login_form.cleaned_data.get('username')
         password = login_form.cleaned_data.get('password')
-        user = authenticate(username= username,password=password)
-        if user:
-            if user.is_active:
+        user = authenticate(username= username,password=password) #userが存在するかつ情報があっているか確認
+        if user: #user exist
+            if user.is_active: 
                 login(request,user)
                 return redirect('TodoApp:todo_list')
             else:

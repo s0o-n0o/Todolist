@@ -3,6 +3,11 @@ from django import forms
 from django.core import validators
 from .models import Todo
 from django.contrib.admin.widgets import AdminDateWidget
+from datetime import datetime, timedelta
+
+
+today = datetime.today() + timedelta(days =1)
+tomorrow = datetime.strftime(today, '%Y-%m-%d')
 
 class AddForm(forms.ModelForm):
     title = forms.CharField(label='title')
@@ -12,15 +17,15 @@ class AddForm(forms.ModelForm):
         (2,'習慣'),
         (3,'用事'),
         (4,'やりたい事'),
-    ),widget=forms.SelectMultiple,required=False)
-    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False)
+    ),widget=forms.Select,required=False)
+    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False,initial=tomorrow)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
         (2,'2'),
         (3,'3'),
         (4,'4'),
         (5,'5'),
-        ),widget=forms.RadioSelect,initial=1)
+        ),widget=forms.Select,initial=1)
     # created_at = 
 
     class Meta:
@@ -39,15 +44,15 @@ class UpdateForm(forms.ModelForm):
         (2,'習慣'),
         (3,'用事'),
         (4,'やりたい事'),
-    ),widget=forms.SelectMultiple,required=False)
-    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False)
+    ), widget=forms.Select,required=False)
+    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False,initial=tomorrow)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
         (2,'2'),
         (3,'3'),
         (4,'4'),
         (5,'5'),
-        ),widget=forms.RadioSelect,required=False)
+        ),widget=forms.Select,required=False)
     
     class Meta:
         model = Todo
