@@ -27,13 +27,15 @@
       <a class="btn btn-primary collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
         メニュー
       </font></font></a>
-      <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_list' %}"> Todoリスト</a>
 
     </p>
     <div class="collapse" id="collapseExample" style="">
     <a type="submit" class="ms-1 btn btn-primary" href="{% url 'user:user_login' %}"> ログイン</a>
     <a type="submit" class="ms-1 btn btn-primary" href="{% url 'user:register' %}"> 登録</a>
-    <a type="submit" class="ms-1 btn btn-primary" href="{% url 'user:user_logout' %}"> ログアウト</a>
+    {% if user.is_authenticated %}
+      <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_list' %}"> Todoリスト</a>
+      <a type="submit" class="ms-1 btn btn-primary" href="{% url 'user:user_logout' %}"> ログアウト</a>
+    {% endif %}
 
     </div>
     </header>

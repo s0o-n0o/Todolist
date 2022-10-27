@@ -8,18 +8,19 @@ from django.http import HttpResponse , HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+ch=(
+        (1,'仕事'),
+        (2,'習慣'),
+        (3,'用事'),
+        (4,'やりたい事'),
+    )
 
 #HTMLに表示
 def Todo_list(request):
     todos = Todo.objects.all()
-    # choices=Todo._meta.get_field('category').choices
-    # choice_list ={}
-    # todos_choice = []
-    # for number,category in choices:
-    #     choice_list[number]=category
-    # for i in range(len(todos)):
-    #     todos_choice.append(choice_list[int(todos[i].category)])
-    print(todos[0].get_category_display())
+    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
+    for todo in todos:
+        todo.category =choices[todo.category] 
     return render(request,'todoapp/todo_list.html',context= {
         "todo_list":todos,
         # "choices":todos_choice,
@@ -49,7 +50,6 @@ def update_todo(request,id):
             return HttpResponseRedirect('/todoapp/')
         else:
             print("失敗したので、エラーを表示します")
-            print(update.errors)
     return render(request,'todoapp/update_todo.html',context={
         'update':update,
         'todo':todo
