@@ -1,36 +1,34 @@
 from dataclasses import fields
 from django import forms
 from django.contrib.auth.models import User
-from user.models import Profile
+from .models import Users
+from django.contrib.auth.password_validation import validate_password
 
-class UserForm(forms.ModelForm):
-    username = forms.CharField(label='名前')
-    email = forms.EmailField(label='メールアドレス')
-    password = forms.CharField(label='パスワード',widget=forms.PasswordInput())
+
+class RegistForm(forms.ModelForm):
+    username= forms.CharField(label='username')
+    email=forms.EmailField(label='email')
+    password = forms.CharField(label='password',widget=forms.PasswordInput())
+    confirm_password = forms.CharField(label='confirm_password',widget=forms.PasswordInput())
 
     class Meta:
-        model = User
+        model = Users
         fields = ('username','email','password')
-
-class ProfileForm(forms.ModelForm):
-    website = forms.URLField(label='ホームページ')
-    picture = forms.FileField(label='写真')
-
-    class Meta:
-        model = Profile
-        fields = ('website','picture')
-
-class LoginForm(forms.Form):
-    username = forms.CharField(label='名前',max_length=15)
-    password = forms.CharField(label='パスワード',widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label='パスワード再入力',widget=forms.PasswordInput())
-
+    
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data['password']
         confirm_password = cleaned_data['confirm_password']
         if password != confirm_password:
             raise forms.ValidationError('パスワードが一致しません')
-            
+    
+    def save(self,commit=False):
+        user = super().save(commit=False)
+        validate_password(self.cleaned_data['password'],user)
+        user.set_password(self.cleaned_data['password'])
+        user.save()
+        return user
 
-        
+class LoginForm(forms.Form):
+    email = forms.CharField(label='名前')
+    password = forms.CharField(label='パスワード',widget=forms.PasswordInput())

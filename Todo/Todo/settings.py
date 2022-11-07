@@ -74,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Todo.wsgi.application'
+AUTH_USER_MODEL = 'user.Users'
 
 
 # Database

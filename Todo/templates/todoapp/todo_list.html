@@ -4,10 +4,25 @@
 {% block content %}
     <header class =" p-1">
     <div class="d-flex justify-content-left">
-        <a type="submit" class="ms-1 btn btn-primary" href="{% url 'TodoApp:add_todo' %}"> +追加</a>
+    <div>
+        <a type="submit" class="ms-1 btn btn-primary" href="{% url 'TodoApp:add_todo' %}">+追加</a>    
     </div>
+
+    <form method="POST" class="ms-4 d-flex justify-content-left" action="{% url 'TodoApp:search' %}"> {% csrf_token%}
+        <input type="text" name="keyword">
+        <div class="ms-2">
+        <button type="submit" class="btn btn-danger">+ search</button>        
+        </div>
+    </form>
+    </div>
+
     </header>
     <div>
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{message}}</div>
+        {% endfor%}
+    {% endif %}
     {% for todo in todo_list %}
     <ul class="list-group">
         <li class="ms-2 list-group-item" > 
@@ -23,4 +38,8 @@
     </ul>
     {% endfor %}
     </div>
+    {% block javascript %}
+    
+    {% endblock %}
+    
 {% endblock %}
