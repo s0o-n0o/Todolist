@@ -7,9 +7,7 @@ from . import forms
 from django.http import HttpResponse , HttpResponseRedirect,Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Q
-
-
+from django.http import JsonResponse
 
 # Create your views here.
 ch=(
@@ -89,21 +87,36 @@ def add_todo(request):
         "form":form
     })
 
+def change_status(request):
+    if request.is_ajax:
+        status = request.GET.get('todostatus')
+        todo_id = request.GET.get('todo_id')
+        if status and todo_id:
+            todo = Todo.objects.get(id=todo_id)
+            todo.status = status
+            todo.save()
+            return JsonResponse({'message':'変更しました'})
+
 
 def search(request):
     todos = Todo.objects.order_by('-id')
     """ 検索機能の処理 """
-    keyword = request.POST.get('keyword')
+    keyword = request.GET.get('keyword')
+    print(keyword)
     choices={'仕事':'1','習慣':'2','用事':"3",'やりたい事':"4"}
     key= choices[keyword]
     if keyword:
         todos = todos.filter(
                 category=key
             )
-        messages.success(request, '「{}」の検索結果'.format(keyword))
+        messages.success(request, '{}'.format(keyword))
         choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
         for todo in todos:
             todo.category =choices[todo.category] 
         return render(request,'todoapp/todo_list.html',context={
             'todo_list':todos,
         })
+
+def priority_sort(request):
+    todos = Todo.objects.all()
+    todos = todos.filter(priority_sort)
