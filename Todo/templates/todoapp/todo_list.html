@@ -81,8 +81,8 @@
     $('input[name="todocheckbox"]').change(function(){
         alert('checkbox is checked.');
         let todocheckbox= document.getElementById('todocheckbox');
-        $.post( '{% url 'TodoApp:change_status' %}', 'todo_status=todocheckbox' );
-    }
+        $.post( '{% url 'TodoApp:change_status'%}', 'todo_status=todocheckbox');
+    })
     </script>
     {% endblock %}
     

@@ -87,16 +87,16 @@ def add_todo(request):
         "form":form
     })
 
-def change_status(request):
-    if request.is_ajax:
-        status = request.GET.get('todostatus')
-        todo_id = request.GET.get('todo_id')
-        if status and todo_id:
-            todo = Todo.objects.get(id=todo_id)
-            todo.status = status
-            todo.save()
-            return JsonResponse({'message':'変更しました'})
-
+async def change_status(request):
+    status = request.POST.get('todostatus')
+    print(status)
+    todo_id = request.POST.get('todo_id')
+    # if status and todo_id:
+    async for todo in Todo.objects.get(id=todo_id):
+        todo.status = status
+        todo.save()
+    return HttpResponse({'message':'変更しました'})
+    
 
 def search(request):
     todos = Todo.objects.order_by('-id')
