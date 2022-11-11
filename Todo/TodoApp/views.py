@@ -19,12 +19,18 @@ ch=(
 
 #HTMLに表示
 def todo_list(request):
-    todos = Todo.objects.all()
+    done = Todo.objects.filter(status=True)
+    not_done = Todo.objects.filter(status=False)
     choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-    for todo in todos:
+    # print(type(done))
+    # print(type(not_done))
+    for todo in done:
+        todo.category =choices[todo.category]
+    for todo in not_done:
         todo.category =choices[todo.category] 
     return render(request,'todoapp/todo_list.html',context= {
-        "todo_list":todos,
+        "done_list":done,
+        "not_done_list":not_done,
         # "choices":todos_choice,
     })
 
@@ -87,16 +93,15 @@ def add_todo(request):
         "form":form
     })
 
-async def change_status(request):
-    status = request.POST.get('todostatus')
-    print(status)
-    todo_id = request.POST.get('todo_id')
-    # if status and todo_id:
-    async for todo in Todo.objects.get(id=todo_id):
-        todo.status = status
-        todo.save()
-    return HttpResponse({'message':'変更しました'})
-    
+def change_status(request,id,status):
+    todo = Todo.objects.get(id=id)
+    if status == 'True':
+        todo.status =  False
+    elif status == 'False':
+        todo.status = True
+    todo.save()
+    return HttpResponseRedirect('/todoapp/')
+
 
 def search(request):
     todos = Todo.objects.order_by('-id')
@@ -110,13 +115,63 @@ def search(request):
                 category=key
             )
         messages.success(request, '{}'.format(keyword))
+        done= todos.filter(status=True)
+        not_done= todos.filter(status=False)
         choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-        for todo in todos:
+        for todo in done:
+            todo.category =choices[todo.category] 
+        for todo in not_done:
             todo.category =choices[todo.category] 
         return render(request,'todoapp/todo_list.html',context={
-            'todo_list':todos,
+            'done_list':done,
+            'not_done_list':not_done,
         })
 
 def priority_sort(request):
-    todos = Todo.objects.all()
-    todos = todos.filter(priority_sort)
+    todos = Todo.objects.order_by('priority')
+    done= todos.filter(status=True)
+    not_done= todos.filter(status=False)
+    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
+    for todo in done:
+            todo.category =choices[todo.category]
+    for todo in not_done:
+            todo.category =choices[todo.category]
+    messages.success(request, '優先度順')
+    return render(request,'todoapp/todo_list.html',context={
+            # 'todo_list':todos,
+            'done_list':done,
+            'not_done_list':not_done,
+
+        })
+
+def deadline_sort(request):
+    todos = Todo.objects.order_by('deadline')
+    done= todos.filter(status=True)
+    not_done= todos.filter(status=False)
+    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
+    for todo in done:
+            todo.category =choices[todo.category] 
+    for todo in not_done:
+            todo.category =choices[todo.category] 
+    messages.success(request, '期限順')
+    return render(request,'todoapp/todo_list.html',context={
+            # 'todo_list':todos,
+            'done_list':done,
+            'not_done_list':not_done,
+        })
+
+def category_sort(request):
+    todos = Todo.objects.order_by('category')
+    done= todos.filter(status=True)
+    not_done= todos.filter(status=False)
+    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
+    for todo in done:
+            todo.category =choices[todo.category] 
+    for todo in not_done:
+            todo.category =choices[todo.category] 
+    messages.success(request, 'カテゴリ順')
+    return render(request,'todoapp/todo_list.html',context={
+            # 'todo_list':todos,
+            'done_list':done,
+            'not_done_list':not_done,
+        })
