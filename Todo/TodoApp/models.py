@@ -4,11 +4,16 @@ from importlib.metadata import requires
 from tkinter import Widget
 from turtle import title
 from django.db import models
+from django.contrib.auth import get_user_model
+
 
 # Create your models here.
 class Todo(models.Model):
     today = datetime.today() + timedelta(days =1)
     tomorrow = datetime.strftime(today, '%Y-%m-%d')
+    user = models.ForeignKey(
+        'user.Users', on_delete = models.CASCADE
+    )
     title = models.CharField(max_length=50)
     detail =models.CharField(max_length=200,null=True)
     status = models.BooleanField(default=False)

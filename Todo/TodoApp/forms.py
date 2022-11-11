@@ -18,7 +18,7 @@ class AddForm(forms.ModelForm):
         (3,'用事'),
         (4,'やりたい事'),
     ),widget=forms.Select,required=False)
-    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False,initial=tomorrow)
+    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),initial=tomorrow)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
         (2,'2'),
@@ -30,7 +30,7 @@ class AddForm(forms.ModelForm):
 
     class Meta:
         model = Todo
-        exclude = ['status','created_at','updated_at']
+        exclude = ['user','status','created_at','updated_at']
         # fields="__all__"
         widgets ={
             'deadline':AdminDateWidget(),
@@ -56,7 +56,7 @@ class UpdateForm(forms.ModelForm):
     
     class Meta:
         model = Todo
-        exclude = ['status','created_at','updated_at']
+        exclude = ['user','status','created_at','updated_at']
         # fields="__all__"
         widgets ={
             'deadline':AdminDateWidget(),
