@@ -6,6 +6,8 @@ from turtle import title
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class List(models.Model):
+    list_name = models.CharField(max_length=255)
 
 # Create your models here.
 class Todo(models.Model):
@@ -19,7 +21,9 @@ class Todo(models.Model):
     status = models.BooleanField(default=False)
     deadline = models.DateField('期限',blank=True,default=tomorrow)
     priority = models.IntegerField(null=True)
-    category = models.CharField(max_length=50,null=True)
+    category = models.ForeignKey(
+        'List',on_delete=models.CASCADE
+    )
     created_at =  models.DateTimeField(help_text='作成日時',auto_now_add=True)
     updated_at = models.DateTimeField(help_text='更新日時',auto_now=True)
 
@@ -28,4 +32,8 @@ class Todo(models.Model):
 
     class Meta:
         db_table = 'todo'
+    
+
+# class Grope(models.Model):
+#     grope_name = models.CharField(max_length=255)
 
