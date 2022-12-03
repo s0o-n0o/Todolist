@@ -1,0 +1,30 @@
+{% extends "todoapp/index.html" %}
+{% load static %}
+{% load widget_tweaks%}
+{% block title %}Todoホーム{{ block.super }}{% endblock %}
+
+{% block content %}
+    <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:create_list' %}"> リスト作成</a>
+        <table class="table table-hover table-white ms-2">
+        <thead>
+            <tr>
+                <th scope="col">タイトル</th>
+                <th scope="col"><img src="{% static "img/trash.png" %}" height="20" width="40"></th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for list in lists %}
+            <tr class="table-active">
+                <td>   
+                <a href="{% url 'TodoApp:todo_list' pk=list.pk %}">
+                {{ list.list_name}}
+                </td> 
+                <td>
+                <a href="{% url 'TodoApp:delete_list' pk=list.pk %}">
+                <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
+                </td>
+            </tr>
+            {% endfor %}
+
+<tr>
+{% endblock %}

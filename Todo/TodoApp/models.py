@@ -6,8 +6,11 @@ from turtle import title
 from django.db import models
 from django.contrib.auth import get_user_model
 
-class List(models.Model):
-    list_name = models.CharField(max_length=255)
+class ListTodo(models.Model):
+    list_name = models.CharField(max_length=255,primary_key=True)
+
+    class Meta:
+        db_table = 'list_todo'
 
 # Create your models here.
 class Todo(models.Model):
@@ -21,8 +24,8 @@ class Todo(models.Model):
     status = models.BooleanField(default=False)
     deadline = models.DateField('期限',blank=True,default=tomorrow)
     priority = models.IntegerField(null=True)
-    category = models.ForeignKey(
-        'List',on_delete=models.CASCADE
+    list_name = models.ForeignKey(
+        'ListTodo',on_delete=models.CASCADE
     )
     created_at =  models.DateTimeField(help_text='作成日時',auto_now_add=True)
     updated_at = models.DateTimeField(help_text='更新日時',auto_now=True)

@@ -25,12 +25,13 @@
   <h1 class="d-block p-2 text-bg-primary text">Todolist
   <header>  
     <p>
-    {% if user.is_authenticated %}
-      <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_list' %}"> Todoリスト</a>
-    {% endif %}
-      <a class="btn btn-primary collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-        メニュー
-      </font></font></a>
+      {% if user.is_authenticated %}
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_home' %}"> Todoリスト</a>
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_today' %}"> 今日のTodo</a>
+      {% endif %}
+        <a class="btn btn-primary collapsed" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+          メニュー
+        </font></font></a>
     </p>
     <div class="collapse" id="collapseExample" style="">
     {% if user.is_authenticated %}
