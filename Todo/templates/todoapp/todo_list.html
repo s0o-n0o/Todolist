@@ -49,13 +49,13 @@
             <tr class="table-active" id="not_done">
                 <td>   
                 {% if todo.status == False%}
-                <a href="{% url 'TodoApp:change_status' id=todo.id status=todo.status %}">未完了</a>
+                <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">未完了</a>
                 {% else%}
-                    <a href="{% url 'TodoApp:change_status' id=todo.id status=todo.status %}">完了</a>
+                    <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">完了</a>
                 {% endif %}
                 </td> 
                 <td>
-                <a href=" {% url 'TodoApp:update_todo' id=todo.id %}">{{todo.title}} </a>
+                <a href=" {% url 'TodoApp:update_todo' pk=pk id=todo.id %}">{{todo.title}} </a>
                 </td>
                 <td>
                 {{todo.deadline}}  
@@ -64,7 +64,7 @@
                 {{todo.priority}} 
                 </td>
                 <td>
-                <a href="{% url 'TodoApp:delete_todo' id=todo.id %}">
+                <a href="{% url 'TodoApp:delete_todo' pk=pk id=todo.id %}">
                 <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
                 </td>
             </tr>
@@ -78,13 +78,13 @@
             <tr class="table-active" id = "done">
                 <td>   
                 {% if todo.status == False%}
-                <a href="{% url 'TodoApp:change_status' id=todo.id status=todo.status %}">未完了</a>
+                <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">未完了</a>
                 {% else%}
-                    <a href="{% url 'TodoApp:change_status' id=todo.id status=todo.status %}">完了</a>
+                    <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">完了</a>
                 {% endif %}
                 </td> 
                 <td>
-                <a href=" {% url 'TodoApp:update_todo' id=todo.id %}">{{todo.title}} </a>
+                <a href=" {% url 'TodoApp:update_todo' pk=pk id=todo.id %}">{{todo.title}} </a>
                 </td>
                 <td>
                 {{todo.deadline}}  
@@ -93,7 +93,7 @@
                 {{todo.priority}} 
                 </td>
                 <td>
-                <a href="{% url 'TodoApp:delete_todo' id=todo.id %}">
+                <a href="{% url 'TodoApp:delete_todo' pk=pk id=todo.id %}">
                 <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
                 </td>
             </tr>

@@ -1,9 +1,117 @@
-{% extends "todoapp/index.html" %}
-{% load widget_tweaks%}
-{% block title %}Today's Todo{{ block.super }}{% endblock %}
+{% extends 'todoapp/index.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/todo_list.css" %}">
+{% block title %}Today's Todo {{block.super}}{% endblock%}
 
 {% block content %}
 <h1>Today's Todo!</h1>
+    <header class ="p-1">
+        <div class="d-flex justify-content-left">
+            <a type="submit" class="ms-1 btn btn-primary" href="{% url 'TodoApp:add_todo' pk=None %}">+追加</a>    
+            <div class="ms-3 dropdown">
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    並べ替え
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a type="submit" class="dropdown-item ms-1 btn btn-primary" href="{% url 'TodoApp:priority_sort' %}">優先度</a>    </li>
+                    <li><a type="submit" class="dropdown-item ms-1 btn btn-primary" href="{% url 'TodoApp:category_sort' %}">カテゴリー</a></li>
+                    <li><a type="submit" class="dropdown-item ms-1 btn btn-primary" href="{% url 'TodoApp:deadline_sort' %}">期限</a></li>
+                </ul>
+            </div>
+            <form class="d-flex ms-2" method="GET" action="{% url 'TodoApp:search' %}"> 
+                {% csrf_token%}
+                <input class="form-control me-2" type="text" name="keyword" placeholder="CategorySearch" >
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
 
 
+
+    </header>
+    <div class='mt-5'>
+        {% if messages %}
+            {% for message in messages %}
+                <h3>{{message}}</h3>
+            {% endfor%}
+        {% endif %}
+
+    <table class="table table-hover table-white ms-2">
+        <thead>
+            <tr>
+                <th scope="col"  style="width: 15%">進捗</th>
+                <th scope="col">タイトル</th>
+                <th scope="col">期限</th>
+                <th scope="col">優先度</th>
+                <th scope="col">リスト名</th>
+                <th scope="col"><img src="{% static "img/trash.png" %}" height="20" width="40"></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+    {% for todo in not_done_list %}
+            <tr class="table-active" id="not_done">
+                <td>   
+                {% if todo.status == False%}
+                <a href="{% url 'TodoApp:change_status' pk=None id=todo.id status=todo.status %}">未完了</a>
+                {% else%}
+                    <a href="{% url 'TodoApp:change_status' pk=None id=todo.id status=todo.status %}">完了</a>
+                {% endif %}
+                </td> 
+                <td>
+                <a href=" {% url 'TodoApp:update_todo' pk=None id=todo.id %}">{{todo.title}} </a>
+                </td>
+                <td>
+                {{todo.deadline}}  
+                </td>
+                <td>
+                {{todo.priority}} 
+                </td>
+                <td>
+                {{todo.list_name}} 
+                </td>
+                <td>
+                <a href="{% url 'TodoApp:delete_todo' pk=None id=todo.id %}">
+                <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
+                </td>
+            </tr>
+            {% endfor %}
+
+<tr>
+<td></td>
+</tr>
+
+        {% for todo in done_list %}
+            <tr class="table-active" id = "done">
+                <td>   
+                {% if todo.status == False%}
+                <a href="{% url 'TodoApp:change_status' pk=None id=todo.id status=todo.status %}">未完了</a>
+                {% else%}
+                    <a href="{% url 'TodoApp:change_status' pk=None id=todo.id status=todo.status %}">完了</a>
+                {% endif %}
+                </td> 
+                <td>
+                <a href=" {% url 'TodoApp:update_todo' pk=None id=todo.id %}">{{todo.title}} </a>
+                </td>
+                <td>
+                {{todo.deadline}}  
+                </td>
+                <td>
+                {{todo.priority}} 
+                </td>
+                <td>
+                {{todo.list_name}} 
+                </td>
+                <td>
+                <a href="{% url 'TodoApp:delete_todo' pk=None id=todo.id %}">
+                <img src="{% static "img/trash.png" %}" height="20" width="40"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+        <div class="done" >
+        </div>
+    </div>
+    
 {% endblock %}

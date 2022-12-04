@@ -8,48 +8,50 @@ from django.http import HttpResponse , HttpResponseRedirect,Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+import datetime
 
 # Create your views here.
-ch=(
-        (1,'仕事'),
-        (2,'習慣'),
-        (3,'用事'),
-        (4,'やりたい事'),
-    )
-
 #HTMLに表示
 def todo_home(request):
     lists = ListTodo.objects.all()
-    for list in lists:
-        print(list.pk)
+
     return render(request,'todoapp/todo_home.html',context={
         'lists':lists,
     })
 
 def todo_today(request):
-    return render(request,'todoapp/todo_today.html')
+    now = datetime.datetime.now()
+    print(now)
+    done = Todo.objects.filter(status=True,deadline=now)
+    not_done = Todo.objects.filter(status=False,deadline=now)
+    return render(request,'todoapp/todo_today.html',context= {
+        "done_list":done,
+        "not_done_list":not_done,
+    })
+
 
 def create_list(request):
-    list_form = forms.ListForm(request.POST or None)
-    if list_form.is_valid():
-        list_form.save()
-        return HttpResponseRedirect('/todoapp/home')
-    else:
-        count = ListTodo.objects.filter(list_name=request.POST.get('list_name')).count()
-        list_name = str(request.POST.get('list_name')) + "("+str(count)+")"
-        list_form.list_name = list_name
-        
-        if list_form.is_valid():
+    list_form = forms.ListForm()
+    if request.method == 'POST':
+        list_form = forms.ListForm(request.POST)
+        list_todo = list(ListTodo.objects.filter(list_name=request.POST.get('list_name')))
+        if list_form.is_valid() :
             list_form.save()
-            print(list_form)
             return HttpResponseRedirect('/todoapp/home')
         else:
-            print(list_form.errors)
-            print(list_form.list_name)
-
+            for i in range(1,1000):
+                list_name = str(request.POST.get('list_name')) + "("+str(i)+")"
+                if ListTodo.objects.filter(list_name=list_name).exists() == False:
+                    break
+                print(list_name)
+                i = i+1
+            new_list_todo = ListTodo(list_name=list_name)
+            new_list_todo.save()
+            return HttpResponseRedirect('/todoapp/home')
     return render(request,'todoapp/create_list.html',context={
         'form':list_form,
     })
+
 
 def todo_list(request,pk):
     pk = pk
@@ -65,14 +67,21 @@ def todo_list(request,pk):
 
 #新しいタスクを追加
 def add_todo(request,pk):
-    form=forms.AddForm()
+    today = ""
+    if pk == "None":
+        today = pk
+        pk = "1"
+    list_todo = ListTodo.objects.get(pk=pk)
+    form=forms.AddForm(initial={'list_name':list_todo})
     if request.method == "POST":
         form = forms.AddForm(request.POST) 
         if form.is_valid():
             form.instance.user=request.user
             print("成功したのでデータを保存します")
             form.save()
-            return HttpResponseRedirect('/todoapp/')
+            if today == "None":
+                return HttpResponseRedirect('/todoapp/today')
+            return HttpResponseRedirect('/todoapp/todolist/'+ pk)
         else:
             print("失敗したので、エラーを表示します")
             print(form.errors)
@@ -81,7 +90,7 @@ def add_todo(request,pk):
     })
 
 #タスクの更新(編集)
-def update_todo(request,id):
+def update_todo(request,pk,id):
     todo = Todo.objects.get(id=id)
     if todo.user.id != request.user.id:
         raise Http404
@@ -101,8 +110,9 @@ def update_todo(request,id):
             todo.detail=request.POST.get("detail")
             todo.deadline=request.POST.get("deadline")
             todo.priority=request.POST.get("priority")
+            todo.list_name.list_name=request.POST.get("list_name")
             todo.save()
-            return HttpResponseRedirect('/todoapp/')
+            return HttpResponseRedirect('/todoapp/todolist/'+pk)
         else:
             print("失敗したので、エラーを表示します")
             print(update.errors)
@@ -112,26 +122,30 @@ def update_todo(request,id):
     })
 
 #タスクの削除
-def delete_todo(request,id):
+def delete_todo(request,pk,id):
     todo = Todo.objects.filter(id=id).delete()
+
     HttpResponse('削除しました')
-    return HttpResponseRedirect('/todoapp/')
+    return HttpResponseRedirect('/todoapp/todolist/'+pk)
 
 def delete_list(request,pk):
     list = ListTodo.objects.filter(pk=pk).delete()
     HttpResponse('削除しました')
-    return HttpResponseRedirect('/todoapp/')
+    return HttpResponseRedirect('/todoapp/home')
 
 
 
-def change_status(request,id,status):
+def change_status(request,pk,id,status):
     todo = Todo.objects.get(id=id)
     if status == 'True':
         todo.status =  False
     elif status == 'False':
         todo.status = True
     todo.save()
-    return HttpResponseRedirect('/todoapp/')
+    if pk == 'None':
+        return HttpResponseRedirect('/todoapp/today')
+
+    return HttpResponseRedirect('/todoapp/todolist/'+pk)
 
 
 def search(request):
