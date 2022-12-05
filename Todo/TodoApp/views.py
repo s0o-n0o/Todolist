@@ -176,11 +176,6 @@ def priority_sort(request):
     todos = Todo.objects.order_by('priority')
     done= todos.filter(status=True)
     not_done= todos.filter(status=False)
-    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-    for todo in done:
-            todo.category =choices[todo.category]
-    for todo in not_done:
-            todo.category =choices[todo.category]
     messages.success(request, '優先度順')
     return render(request,'todoapp/todo_list.html',context={
             # 'todo_list':todos,
@@ -193,11 +188,6 @@ def deadline_sort(request):
     todos = Todo.objects.order_by('deadline')
     done= todos.filter(status=True)
     not_done= todos.filter(status=False)
-    choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-    for todo in done:
-            todo.category =choices[todo.category] 
-    for todo in not_done:
-            todo.category =choices[todo.category] 
     messages.success(request, '期限順')
     return render(request,'todoapp/todo_list.html',context={
             # 'todo_list':todos,
