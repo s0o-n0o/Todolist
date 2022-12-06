@@ -5,6 +5,7 @@ from tkinter import Widget
 from turtle import title
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.timezone import now
 
 class ListTodo(models.Model):
     list_name = models.CharField(max_length=255,unique=True,null=True)
@@ -26,7 +27,7 @@ class Todo(models.Model):
     title = models.CharField(max_length=50)
     detail =models.CharField(max_length=200,null=True)
     status = models.BooleanField(default=False)
-    deadline = models.DateField('期限',blank=True,default=today)
+    deadline = models.DateField('期限',blank=True,default=now)
     priority = models.IntegerField(null=True)
     list_name = models.ForeignKey(
         'ListTodo',on_delete=models.CASCADE

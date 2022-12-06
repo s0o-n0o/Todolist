@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'TodoApp',
     'user',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins':[ 
+                'bootstrap4.templatetags.bootstrap4',
+            ],
         },
     },
 ]
@@ -76,6 +81,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Todo.wsgi.application'
 AUTH_USER_MODEL = 'user.Users'
 
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

@@ -30,10 +30,10 @@ def user_login(request):
         email = login_form.cleaned_data.get('email')
         password = login_form.cleaned_data.get('password')
         user = authenticate(email =email, password=password) #userが存在するかつ情報があっているか確認
-        print(password)
+        # print(password)
         if user: #user exist
             login(request,user)
-            return redirect('TodoApp:todo_list')
+            return redirect('TodoApp:todo_home')
         else:
             messages.warning(request,'ユーザかパスワードが間違っています')
     return render(request,'user/login.html',context={

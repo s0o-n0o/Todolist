@@ -4,9 +4,9 @@ from django.core import validators
 from .models import Todo,ListTodo
 from django.contrib.admin.widgets import AdminDateWidget
 from datetime import datetime, timedelta
+from django.utils.timezone import now
 
-
-today = datetime.today()
+today =now
 # tomorrow = datetime.strftime(today, '%Y-%m-%d')
 
 class ListForm(forms.ModelForm):
@@ -19,7 +19,7 @@ class ListForm(forms.ModelForm):
 class AddForm(forms.ModelForm):
     title = forms.CharField(label='title')
     detail = forms.CharField(label='detail',widget=forms.Textarea(attrs={'rows':1,'cols':20}),required=False)
-    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),initial=today)
+    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(),initial=today)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
         (2,'2'),
@@ -38,7 +38,7 @@ class AddForm(forms.ModelForm):
 class UpdateForm(forms.ModelForm):
     title = forms.CharField(label='title')
     detail = forms.CharField(label='detail',widget=forms.Textarea(attrs={'rows':1,'cols':20}),required=False)
-    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(attrs={'placeholder':'2000-01-01'}),required=False,initial=today)
+    deadline = forms.DateField(label='deadline', widget=AdminDateWidget(),required=False,initial=today)
     priority  = forms.ChoiceField(label='priority', choices=(
         (1,'1'),
         (2,'2'),
