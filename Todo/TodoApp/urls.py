@@ -13,7 +13,7 @@ urlpatterns = [
     path('delete_todo/<str:pk><int:id>',views.delete_todo,name = 'delete_todo'),
     path('delete_list/<str:pk>',views.delete_list,name = 'delete_list'),
     path('change_status/<str:pk>/<int:id>/<str:status>',views.change_status,name = 'change_status'),
-    path('search', views.search, name='search'),
+    # path('search', views.search, name='search'),
     path('priority_sort/<str:pk>',views.priority_sort,name = 'priority_sort'),
     path('deadline_sort/<str:pk>',views.deadline_sort,name = 'deadline_sort'),
 ]

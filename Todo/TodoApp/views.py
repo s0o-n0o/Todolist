@@ -57,6 +57,7 @@ def todo_list(request,pk):
     pk = pk
     done = Todo.objects.filter(status=True,list_name=pk)
     not_done = Todo.objects.filter(status=False,list_name=pk)
+    
     #create
     today = ""
     if pk == "None":
@@ -169,29 +170,29 @@ def change_status(request,pk,id,status):
     return HttpResponseRedirect('/todoapp/todolist/'+pk)
 
 
-def search(request):
-    todos = Todo.objects.order_by('-id')
-    """ 検索機能の処理 """
-    keyword = request.GET.get('keyword')
-    print(keyword)
-    choices={'仕事':'1','習慣':'2','用事':"3",'やりたい事':"4"}
-    key= choices[keyword]
-    if keyword:
-        todos = todos.filter(
-                category=key
-            )
-        messages.success(request, '{}'.format(keyword))
-        done= todos.filter(status=True)
-        not_done= todos.filter(status=False)
-        choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-        for todo in done:
-            todo.category =choices[todo.category] 
-        for todo in not_done:
-            todo.category =choices[todo.category] 
-        return render(request,'todoapp/todo_list.html',context={
-            'done_list':done,
-            'not_done_list':not_done,
-        })
+# def search(request):
+#     todos = Todo.objects.order_by('-id')
+#     """ 検索機能の処理 """
+#     keyword = request.GET.get('keyword')
+#     print(keyword)
+#     choices={'仕事':'1','習慣':'2','用事':"3",'やりたい事':"4"}
+#     key= choices[keyword]
+#     if keyword:
+#         todos = todos.filter(
+#                 category=key
+#             )
+#         messages.success(request, '{}'.format(keyword))
+#         done= todos.filter(status=True)
+#         not_done= todos.filter(status=False)
+#         choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
+#         for todo in done:
+#             todo.category =choices[todo.category] 
+#         for todo in not_done:
+#             todo.category =choices[todo.category] 
+#         return render(request,'todoapp/todo_list.html',context={
+#             'done_list':done,
+#             'not_done_list':not_done,
+#         })
 
 def priority_sort(request,pk):
     todos = Todo.objects.filter(list_name=pk).order_by('priority')

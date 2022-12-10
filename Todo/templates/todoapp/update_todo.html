@@ -1,8 +1,21 @@
 {% extends "todoapp/index.html" %}
 {% load widget_tweaks%}
+{% load static %}
 {% block title %}Todo編集画面{{ block.super }}{% endblock %}
 
 {% block content %}
+    {% block extrahead %}
+    <head>
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}"/> {% endcomment %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/calendar.css' %}"/>
+    {{ update.media }}
+    <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+    </head>
+    {% endblock %}
+
     <form class="row g-3" method='POST'>{% csrf_token %}
     <div class="col-md-6">
         <label for="{{ update.title.id_for_label }}" class="form-label">title</label>

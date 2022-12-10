@@ -1,4 +1,4 @@
-const exampleModal = document.getElementById('exampleModal')
+const exampleModal = document.getElementById('createModal')
 exampleModal.addEventListener('show.bs.modal', event => {
     // Button that triggered the modal
     const button = event.relatedTarget
@@ -11,6 +11,6 @@ exampleModal.addEventListener('show.bs.modal', event => {
     const modalTitle = exampleModal.querySelector('.modal-title')
     const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-    modalTitle.textContent = `New message to ${recipient}`
+    modalTitle.textContent = `Add Todo`
     modalBodyInput.value = recipient
     })
