@@ -13,11 +13,29 @@ import datetime
 # Create your views here.
 #HTMLに表示
 def todo_home(request):
+    list_form = forms.ListForm()
     lists = ListTodo.objects.all()
+    if request.method == 'POST':
+        list_form = forms.ListForm(request.POST)
+        if list_form.is_valid() :
+            list_form.save()
+            return HttpResponseRedirect('/todoapp/home')
+        else:
+            for i in range(1,1000):
+                list_name = str(request.POST.get('list_name')) + "("+str(i)+")"
+                if ListTodo.objects.filter(list_name=list_name).exists() == False:
+                    break
+                i = i+1
+            new_list_todo = ListTodo(list_name=list_name)
+            new_list_todo.save()
+            return HttpResponseRedirect('/todoapp/home')
+    
 
     return render(request,'todoapp/todo_home.html',context={
         'lists':lists,
+        'form':list_form,
     })
+
 
 def todo_today(request):
     now = datetime.datetime.now()
@@ -57,7 +75,7 @@ def todo_list(request,pk):
     pk = pk
     done = Todo.objects.filter(status=True,list_name=pk)
     not_done = Todo.objects.filter(status=False,list_name=pk)
-    
+
     #create
     today = ""
     if pk == "None":
@@ -77,6 +95,7 @@ def todo_list(request,pk):
         else:
             print("失敗したので、エラーを表示します")
             print(form.errors)
+            
 
     return render(request,'todoapp/todo_list.html',context= {
         "done_list":done,

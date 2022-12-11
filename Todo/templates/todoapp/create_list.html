@@ -4,22 +4,10 @@
 
 {% block content %}
     <form class="row g-3 ms-3" method='POST'>{% csrf_token %}
-                                <label for="{{ form.title.id_for_label }}" class="form-label">title</label>
-                                {{ form.title|add_class:'form-control' }}
-                                <label for="{{form.detail.id_for_label}}" class="form-label" >Detail</label>
-                                {{ form.detail|add_class:'form-control'}}
-                            
-                                <label for="{{form.deadline.id_for_label}}" class="form-label" >Deadline</label>
-                                {{form.deadline|add_class:'form-control'}}
-                            
-                            <div class="col-md-5">
-                                <label for="{{form.list_name.id_for_label}}" class="form-label">Listname</label>
-                                {{form.list_name|add_class:'form-control'}}
-                                <label for="{{form.priority.id_for_label}}" class="form-label">Priority</label>
-                                {{form.priority|add_class:'form-control'}}
-                            </div>
-                </div>
-                </form>
+    <div class="col-md-6 ">
+        <label for="{{ form.list_name.id_for_label }}" class="form-label">Listname</label>
+        {{ form.list_name|add_class:'form-control' }}
+    </div>
     <div class="col-12">
         <button type="submit" class="btn btn-primary">create!</button>
     </div>

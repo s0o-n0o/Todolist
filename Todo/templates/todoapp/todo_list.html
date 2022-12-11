@@ -65,11 +65,6 @@
                     <li><a type="submit" class="dropdown-item ms-1 btn btn-primary" href="{% url 'TodoApp:deadline_sort' pk=pk%}">期限</a></li>
                 </ul>
             </div>
-            {% comment %} <form class="d-flex ms-2" method="GET" action="{% url 'TodoApp:search' %}"> 
-                {% csrf_token%}
-                <input class="form-control me-2" type="text" name="keyword" placeholder="CategorySearch" >
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form> {% endcomment %}
         </div>
 
 
