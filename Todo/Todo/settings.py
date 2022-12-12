@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/todoapp/todolist/']
 
 # Application definition
 
@@ -41,8 +42,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'TodoApp',
     'user',
-    'bootstrap4',
-    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [

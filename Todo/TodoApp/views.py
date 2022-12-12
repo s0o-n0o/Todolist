@@ -29,8 +29,6 @@ def todo_home(request):
             new_list_todo = ListTodo(list_name=list_name)
             new_list_todo.save()
             return HttpResponseRedirect('/todoapp/home')
-    
-
     return render(request,'todoapp/todo_home.html',context={
         'lists':lists,
         'form':list_form,
