@@ -5,58 +5,12 @@
 {% block title %}Todo一覧画面 {{block.super}}{% endblock%}
 
 {% block content %}
-    {% block extrahead %}
-    <head>
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}"/> {% endcomment %}
-    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
-    {% comment %} <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script> {% endcomment %}
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/calendar.css' %}"/> {% endcomment %}
-    {{ form.media }}
-    <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
-    <script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
-    </head>
-    {% endblock %}
-
     <header class ="p-1">
         <div class="d-flex justify-content-left">
 
         {% comment %} Todo 追加 {% endcomment %}
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="@getbootstrap">+追加</button>
-            <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header ">
-                    <h1 class="modal-title fs-5" id="createModalLabel">New Todo</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="POST">
-                <div class="modal-body">
-                    {% csrf_token %}
-                                <label for="{{ form.title.id_for_label }}" class="form-label">title</label>
-                                {{ form.title|add_class:'form-control' }}
-                                <label for="{{form.detail.id_for_label}}" class="form-label" >Detail</label>
-                                {{ form.detail|add_class:'form-control'}}
-                            
-                                <label for="{{form.deadline.id_for_label}}" class="form-label" >Deadline</label>
-                                {{form.deadline|add_class:'form-control'}}
-                            
-                            <div class="col-md-5">
-                                <label for="{{form.list_name.id_for_label}}" class="form-label">Listname</label>
-                                {{form.list_name|add_class:'form-control'}}
-                                <label for="{{form.priority.id_for_label}}" class="form-label">Priority</label>
-                                {{form.priority|add_class:'form-control'}}
-                            </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">add+</button>
-                </div>
-                </form>
-                </div>
-            </div>
-            </div>
-            <script type="text/javascript" src="{% static 'js/create_todo.js' %}"></script>
-
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:add_todo' pk=pk %}">+追加</a>
+        
 
             <div class="ms-3 dropdown">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,24 +21,23 @@
                     <li><a type="submit" class="dropdown-item ms-1 btn btn-primary" href="{% url 'TodoApp:deadline_sort' pk=pk%}">期限</a></li>
                 </ul>
             </div>
-            {% comment %} <form class="d-flex ms-2" method="GET" action="{% url 'TodoApp:search' %}"> 
-                {% csrf_token%}
-                <input class="form-control me-2" type="text" name="keyword" placeholder="CategorySearch" >
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form> {% endcomment %}
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_home'  %}">戻る</a>
+
         </div>
 
 
 
     </header>
-    <div class='mt-5'>
+    <h1>{{list_name}}</h1>
+
+    <div class='mt-5 ms-2'>
         {% if messages %}
             {% for message in messages %}
                 <h3>{{message}}</h3>
             {% endfor%}
         {% endif %}
 
-    <table class="table table-hover table-white ms-2">
+    <table class="table table-light table-hover   ms-2">
         <thead>
             <tr>
                 <th scope="col"  style="width: 15%">進捗</th>
@@ -97,7 +50,7 @@
         </thead>
         <tbody>
     {% for todo in not_done_list %}
-            <tr class="table-active" id="not_done">
+            <tr class="table-light" id="not_done">
                 <td>   
                 {% if todo.status == False%}
                 <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">未完了</a>
@@ -123,10 +76,14 @@
 
 <tr>
 <td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 
         {% for todo in done_list %}
-            <tr class="table-active" id = "done">
+            <tr class="table-light " id = "done">
                 <td>   
                 {% if todo.status == False%}
                 <a href="{% url 'TodoApp:change_status' pk=pk id=todo.id status=todo.status %}">未完了</a>
@@ -152,8 +109,6 @@
         </tbody>
     </table>
 
-        <div class="done" >
-        </div>
     </div>
     
 {% endblock %}

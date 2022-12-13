@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/todoapp/todolist/']
+# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/todoapp/todolist/']
 
 # Application definition
 

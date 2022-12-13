@@ -3,6 +3,10 @@
 {% block title %}Todo追加画面{{ block.super }}{% endblock %}
 
 {% block content %}
+<header>
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:todo_home' %}">戻る</a>
+</header>
+
     <form class="row g-3 ms-3" method='POST'>{% csrf_token %}
     <div class="col-md-6 ">
         <label for="{{ form.list_name.id_for_label }}" class="form-label">Listname</label>

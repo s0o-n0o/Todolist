@@ -13,25 +13,9 @@ import datetime
 # Create your views here.
 #HTMLに表示
 def todo_home(request):
-    list_form = forms.ListForm()
     lists = ListTodo.objects.all()
-    if request.method == 'POST':
-        list_form = forms.ListForm(request.POST)
-        if list_form.is_valid() :
-            list_form.save()
-            return HttpResponseRedirect('/todoapp/home')
-        else:
-            for i in range(1,1000):
-                list_name = str(request.POST.get('list_name')) + "("+str(i)+")"
-                if ListTodo.objects.filter(list_name=list_name).exists() == False:
-                    break
-                i = i+1
-            new_list_todo = ListTodo(list_name=list_name)
-            new_list_todo.save()
-            return HttpResponseRedirect('/todoapp/home')
     return render(request,'todoapp/todo_home.html',context={
         'lists':lists,
-        'form':list_form,
     })
 
 
@@ -71,35 +55,14 @@ def create_list(request):
 
 def todo_list(request,pk):
     pk = pk
+    list_name = ListTodo.objects.get(pk=pk)
     done = Todo.objects.filter(status=True,list_name=pk)
     not_done = Todo.objects.filter(status=False,list_name=pk)
-
-    #create
-    today = ""
-    if pk == "None":
-        today = pk
-        pk = "1"
-    list_todo = ListTodo.objects.get(pk=pk)
-    form=forms.AddForm(initial={'list_name':list_todo})
-    if request.method == "POST":
-        form = forms.AddForm(request.POST) 
-        if form.is_valid():
-            form.instance.user=request.user
-            print("成功したのでデータを保存します")
-            form.save()
-            if today == "None":
-                return HttpResponseRedirect('/todoapp/today')
-            return HttpResponseRedirect('/todoapp/todolist/'+ pk)
-        else:
-            print("失敗したので、エラーを表示します")
-            print(form.errors)
-            
-
     return render(request,'todoapp/todo_list.html',context= {
         "done_list":done,
         "not_done_list":not_done,
-        "form":form,
         "pk" :pk,
+        'list_name':list_name,
     })
 
 # Todo_list()
@@ -125,7 +88,8 @@ def add_todo(request,pk):
             print("失敗したので、エラーを表示します")
             print(form.errors)
     return render(request,'todoapp/form_page.html',context={
-        "form":form
+        "form":form,
+        "pk" : pk,
     })
 
 #タスクの更新(編集)
@@ -158,6 +122,7 @@ def update_todo(request,pk,id):
     return render(request,'todoapp/update_todo.html',context={
         'update':update,
         'todo':todo,
+        'pk':pk,
     })
 
 #タスクの削除
@@ -186,30 +151,6 @@ def change_status(request,pk,id,status):
 
     return HttpResponseRedirect('/todoapp/todolist/'+pk)
 
-
-# def search(request):
-#     todos = Todo.objects.order_by('-id')
-#     """ 検索機能の処理 """
-#     keyword = request.GET.get('keyword')
-#     print(keyword)
-#     choices={'仕事':'1','習慣':'2','用事':"3",'やりたい事':"4"}
-#     key= choices[keyword]
-#     if keyword:
-#         todos = todos.filter(
-#                 category=key
-#             )
-#         messages.success(request, '{}'.format(keyword))
-#         done= todos.filter(status=True)
-#         not_done= todos.filter(status=False)
-#         choices={"1":'仕事',"2":'習慣',"3":'用事',"4":'やりたい事'}
-#         for todo in done:
-#             todo.category =choices[todo.category] 
-#         for todo in not_done:
-#             todo.category =choices[todo.category] 
-#         return render(request,'todoapp/todo_list.html',context={
-#             'done_list':done,
-#             'not_done_list':not_done,
-#         })
 
 def priority_sort(request,pk):
     todos = Todo.objects.filter(list_name=pk).order_by('priority')

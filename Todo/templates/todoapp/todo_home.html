@@ -4,31 +4,9 @@
 {% block title %}Todoホーム{{ block.super }}{% endblock %}
 
 {% block content %}
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="@getbootstrap">リスト作成</button>
-            <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header ">
-                    <h1 class="modal-title fs-5" id="createModalLabel">New List</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                <form method='POST'>
-                {% csrf_token %}
-                    <label for="{{ form.list_name.id_for_label }}" class="form-label">Listname</label>
-                    {{ form.list_name|add_class:'form-control' }}
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">create!</button>
-                </div>
-                </form>
-                </div>
-            </div>
-            </div>
-            <script type="text/javascript" src="{% static 'js/create_list.js' %}"></script>
+    <header>
+        <a type="submit" class="ms-2 btn btn-primary" href="{% url 'TodoApp:create_list' %}">リスト作成</a>
+    </header>
 
         <table class="table table-hover table-white ms-2">
         <thead>
@@ -39,7 +17,7 @@
         </thead>
         <tbody>
     {% for list in lists %}
-            <tr class="table-active">
+            <tr class="table-light">
                 <td>   
                 <a href="{% url 'TodoApp:todo_list' pk=list.pk %}">
                 {{ list.list_name}}
